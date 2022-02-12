@@ -5,16 +5,27 @@ const CartRepository = require('../Repository/CartRepository')
 
 module.exports = {
     index(request, response) {
-        response.json(ProductsRepository.FindAll())
+        response.status(200).send(ProductsRepository.FindAll())
     },
 
     checkout(request, response){
         const { products } = request.body
+       
+        const { total_amount, total_amount_with_discount, total_discount, products_details } = CartRepository.CartProductsDetails(products)
 
-        
-        const totalAmount = CartRepository.TotalCart(products)
 
-
-        response.json({ total_amount: totalAmount })
+        const checkInvalidProduct = CartRepository.PickProductsNotFound(products_details)
+       
+        if(total_amount){
+            response.status(200).send({ 
+                total_amount,
+                total_amount_with_discount,
+                total_discount,
+                products: products_details
+            })
+        }
+        else {
+            response.status(404).send(checkInvalidProduct)
+        }
     }
 }
