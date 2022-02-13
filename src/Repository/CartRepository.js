@@ -1,4 +1,6 @@
 const ProductRepository = require('./ProductRepository')
+const DiscountService = require('../Services/DiscountClient')
+
 
 module.exports = {
 
@@ -22,41 +24,72 @@ module.exports = {
         return total
     },
 
-    //Format Product view on output
-    ProductDetails(product){
+    async GetServiceDiscount(id){
 
+       return new Promise((resolve, reject) => DiscountService.DiscountClient.GetDiscount({ productID: id }, function (err, discount){
+            if(err){
+                return reject(err)
+            }
+            resolve(discount)
+        }))
+       
+    },
+
+    DiscountCalc(amount, percent){
+        return Math.round((amount * percent), -2)
+    },
+
+    //Format Product view on output
+    async ProductDetails(product){
+
+        let serviceDiscount = { percentage: 0 };
+
+        //Verify if discount service is avaliable
+        try{
+            serviceDiscount = await this.GetServiceDiscount(product.id)
+        } catch(err) {
+            console.log(`[DISCOUNT SERVICE] Não foi possivel aplicar desconto para o produto de ID ${product.id}, serviço indisponível`)
+        }
+        
+        
         const productExists = ProductRepository.FindById(product.id)
 
+        
         if(productExists){
             const { id, amount, is_gift } = productExists
-    
+            
             const totalAmount = product.quantity * amount
-    
+            
+            //Apply discount if service is avaliable
+            let productDiscount = 0;
+            if(serviceDiscount.percentage)
+                productDiscount = this.DiscountCalc(totalAmount, serviceDiscount.percentage)
+            
             return {
                 id,
                 quantity: product.quantity,
                 unit_amount: amount,
                 total_amount: totalAmount,
-                discount: 1,
+                discount: productDiscount,
                 is_gift
             }
         }
         else
             return { invalid: product.id }
-            
-       
 
     },
 
     //Applying formatted view in all products and verify total discount
-    CartProductsDetails(products) {
+    async CartProductsDetails(products) {
         
         let totalDiscount = 0
-        const details = products.map((product) => {
-            const productDetails = this.ProductDetails(product)
+        const detailsPromisses =  (products.map(async (product) => {
+            const productDetails = await this.ProductDetails(product)
             totalDiscount = totalDiscount + productDetails.discount
             return productDetails
-        })
+        }))
+
+        const details = await Promise.all(detailsPromisses)
         
         const totalAmount = this.TotalCart(products)
         
