@@ -10,20 +10,15 @@ module.exports = {
     async checkout(request, response){
         const { products } = request.body
        
-        const { total_amount, total_amount_with_discount, total_discount, products_details } = await CartRepository.CartProductsDetails(products)
+                
+        const checkBlackFriday = await CartRepository.BlackFridayCheck(products)
 
-        const checkInvalidProduct = CartRepository.PickProductsNotFound(products_details)
-       
-        if(total_amount){
-            response.status(200).send({ 
-                total_amount,
-                total_amount_with_discount,
-                total_discount,
-                products: products_details
-            })
-        }
+        if(!checkBlackFriday.msg.total_amount && checkBlackFriday.msg.status === 404) {
+            const checkInvalidProduct = CartRepository.PickProductsNotFound(checkBlackFriday.msg.products_details)
+            response.status(checkInvalidProduct.status).send(checkInvalidProduct.msg)
+        }        
         else {
-            response.status(404).send(checkInvalidProduct)
+            response.status(checkBlackFriday.status).send(checkBlackFriday.msg)
         }
     }
 }

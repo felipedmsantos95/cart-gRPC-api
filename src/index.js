@@ -1,5 +1,7 @@
+const dotenv = require('dotenv').config()
 const app = require('./app')
-const port = 3000
+
+const port = process.env.API_PORT || 3001
 
 //Exclusive to make the backend run on the port regardless of the test script
 console.log('[HASH CHALLENGE]')
