@@ -9,11 +9,14 @@ module.exports = {
 
     async checkout(request, response){
         const { products } = request.body
-       
-                
-        const checkBlackFriday = await CartRepository.BlackFridayCheck(products)
+        
+        const { today_date } = request.headers
 
-        if(!checkBlackFriday.msg.total_amount && checkBlackFriday.msg.status === 404) {
+
+        const checkBlackFriday = await CartRepository.BlackFridayCheck(products, today_date)
+
+        
+        if(checkBlackFriday.msg.is_invalid) {
             const checkInvalidProduct = CartRepository.PickProductsNotFound(checkBlackFriday.msg.products_details)
             response.status(checkInvalidProduct.status).send(checkInvalidProduct.msg)
         }        

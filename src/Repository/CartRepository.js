@@ -71,7 +71,6 @@ module.exports = {
             //It must be only one gift product input
             if(is_gift){
                 amount = 0
-                product.quantity = 1
                 console.log(`[HASH CART] O produto ${id} é brinde e só pode ser adicionado em 1 unidade.`)
             }
             
@@ -100,8 +99,13 @@ module.exports = {
     async CartProductsDetails(products) {
         
         let totalDiscount = 0
+        let isInvalid = false //Verifiy if in cast there is only valid products
         const detailsPromisses =  (products.map(async (product) => {
             const productDetails = await this.ProductDetails(product)
+
+            if(productDetails.invalid)
+                isInvalid = true
+
             totalDiscount = totalDiscount + productDetails.discount
             return productDetails
         }))
@@ -112,17 +116,25 @@ module.exports = {
         
         const totalAmountDiscont = totalAmount - totalDiscount
 
-        return {
-            total_amount: totalAmount,
-            total_amount_with_discount: totalAmountDiscont,
-            total_discount: totalDiscount,
-            products_details: details
+
+        if(isInvalid){
+            return {
+                is_invalid: true,
+                products_details: details
+            }
+        }else{
+            return {
+                total_amount: totalAmount,
+                total_amount_with_discount: totalAmountDiscont,
+                total_discount: totalDiscount,
+                products_details: details
+            }
         }
+
     },
 
     //Verify wich products are not registered in our datase
-    PickProductsNotFound(output){
-        const productsOutput = output
+    PickProductsNotFound(productsOutput){
 
         const arrayOfInvalids = productsOutput.filter((product) =>{
             if(('invalid' in product)){
@@ -133,24 +145,31 @@ module.exports = {
         })
 
         
-        return { status: 404,  msg: arrayOfInvalids}
+        return { status: 404,  msg: {validation: { message: arrayOfInvalids}}}
 
     },
 
-    isBlackFriday() {
-        const dayBlackFriday = new Date(blackFriday).getDate()
-        const today = new Date().getDate()
+    isBlackFriday(today) {
+
+        const dayBlackFriday = new Date(blackFriday).toLocaleDateString()
         
         return (today == dayBlackFriday)
     },
     
-    //Verify gift products
-    async BlackFridayCheck(products){
+    //Verify gift products             //if date comes from request headers
+    async BlackFridayCheck(products, headerDate){
 
         const CartChekout = await this.CartProductsDetails(products)
+        let today
 
+        if(headerDate)
+            today = new Date(headerDate).toLocaleDateString()
+        else
+            today = new Date().toLocaleDateString()
 
-        if(this.isBlackFriday()){
+        
+
+        if(this.isBlackFriday(today)){
             const productsOutput = CartChekout.products_details
 
             const arrayOfGifts = productsOutput.filter((product) => {
@@ -158,8 +177,9 @@ module.exports = {
                     return true
                 }
             })
-            if(arrayOfGifts.length > 1)
-                return { status: 400,  msg: ['Só pode haver uma entrada para produtos brinde na blackfriday.']}
+
+            if( (arrayOfGifts.length > 1 || (arrayOfGifts[0] && arrayOfGifts[0].quantity > 1))) //Verifiy if has more than one gift products in quantity or ids
+                return { status: 400,  msg:{validation: { message: ['Só pode haver a quantidade de 1 produto brinde na blackfriday.']}} }
             else
                 return {status: 200, msg: CartChekout}
 
@@ -167,7 +187,7 @@ module.exports = {
         } else {
             const productsOutput = CartChekout.products_details
 
-            
+            //Verify wich products are gift
             const arrayOfInvalids = productsOutput.filter((product) => {
                 if(product.is_gift){
                     return true
@@ -175,15 +195,15 @@ module.exports = {
             }).map((productInvalid) => {
                 return `O produto de id ${productInvalid.id} é um brinde de black friday e não pode ser adicionado ao carrinho por enquanto...`
             })
-            if(arrayOfInvalids.length == 0)
+            if(arrayOfInvalids.length == 0){
                 return {status: 200, msg: CartChekout}
+            }
             else
-                return { status: 400,  msg: arrayOfInvalids}
+                return { status: 400,  msg: {validation: { message: arrayOfInvalids}}}
         }
 
 
-    }
-
+    },
 
 
 

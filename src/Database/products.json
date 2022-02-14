@@ -40,12 +40,5 @@
         "description": "Nam ea sed animi neque qui non quis iste.",
         "amount": 900,
         "is_gift": true
-    },
-    {
-        "id": 7,
-        "title": "Handcrafted Steel Towels",
-        "description": "Nam ea sed animi neque qui non quis iste.",
-        "amount": 900,
-        "is_gift": true
     }
 ]
