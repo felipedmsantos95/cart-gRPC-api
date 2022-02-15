@@ -324,5 +324,5 @@ To validate the **rule 2** in the proposed challenge, where it is asked that if 
 ## Links to others related works
 
 * [GoMarketPlace](https://github.com/felipedmsantos95/gomarketplace)
-* [API de Ecommerce](https://github.com/felipedmsantos95/typeorm-relations)
+* [Ecommerce API](https://github.com/felipedmsantos95/typeorm-relations)
 * [GoFinances](https://github.com/felipedmsantos95/gofinances-backend)
