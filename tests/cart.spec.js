@@ -3,8 +3,6 @@ const request = require('supertest')
 const app = require('../src/app')
 
 
-
-
 const blackFriday = process.env.BLACK_FRIDAY_DAY
 
 //Testing cases for the cart entity
@@ -168,7 +166,7 @@ describe('CART', () => {
                         },
                         {//Gift Product
                             "id": 6,
-                            "quantity": 4
+                            "quantity": 1
                         }
                     ]
                 }).expect(400)
