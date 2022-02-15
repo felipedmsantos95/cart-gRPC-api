@@ -78,18 +78,19 @@ Abaixo segue um exemplo de resposta com status HTTP 200 da API:
 *   [Docker](https://www.docker.com/get-started) 19.x ou superior
 *   [Docker-Compose](https://docs.docker.com/compose/install/) 1.26 ou superior
 
-## Executando o Projeto (Com Docker Compose)
-
-Considerando que os requisitos para rodar a aplicação estejam satisfeitos, podemos executar os seguintes comandos:
-
-### Clonando o Projeto
+## Clonando o Projeto
 
 ```bash
 $ git clone https://github.com/felipedmsantos95/hash-cart-challenge 
 $ cd hash-cart-challenge
 ```
 
-## Configurando Variáveis de Ambiente
+## Executando o Projeto (Com Docker Compose)
+
+Considerando que os requisitos para rodar a aplicação estejam satisfeitos, podemos executar os seguintes comandos:
+
+
+### Configurando Variáveis de Ambiente
 
 Antes de execução dos comandos docker, precisamos configurar um `.env` na raiz do projeto, as variáveis devem ser configuradas seguindo o [exemplo](https://github.com/felipedmsantos95/hash-cart-challenge/blob/main/.env.example)
 
@@ -103,10 +104,8 @@ Modelo de conteúdo do arquivo:
 ##  GENERAL  ##
 # --------- #
 PROJECT_NAME=hash-cart-challenge
-
 # You can change to run API in another HTTP port
 API_PORT=3000
-
 
 # --------- #
 ##   gRPC   ##
@@ -115,8 +114,6 @@ API_PORT=3000
 #If it is running in your local machine, please input IP address of your machine
 GRPC_SERVER_ADDRESS=your_ip_server_address:50051
 
-
-
 # -------------------#
 ##  Bussiness Rules  ##
 # ------------------ #
@@ -124,3 +121,115 @@ GRPC_SERVER_ADDRESS=your_ip_server_address:50051
 # Date format ==> year/month/day
 BLACK_FRIDAY_DAY=2022/02/16
 ```
+
+### Rodando a aplicação
+
+Para baixar as imagens docker necessárias e executar os containers com a API e o [serviço de desconto da Hash]((https://hub.docker.com/r/hashorg/hash-mock-discount-service)):
+
+```bash
+$ docker-compose up
+```
+
+Essa deve ser a sáida do terminal e a API estará pronta para receber requisições:
+
+<p align="center">
+  <img src="https://github.com/felipedmsantos95/hash-cart-challenge/blob/main/img/initial_log.png"/>
+</p>
+
+
+## Executando o Projeto (Sem Docker Compose)
+
+
+### Instalando as dependências da API
+
+```bash
+$ npm install
+```
+
+### Scripts da API
+
+Executar serviço:
+
+```bash
+$ npm start
+```
+
+Executar serviço com reinício automático se for detectada alteração no código:
+
+```bash
+$ npm run dev
+```
+
+Executar script de testes da aplicação
+
+```bash
+$ npm test
+```
+
+### Executando serviço de desconto
+
+```bash
+$ docker pull hashorg/hash-mock-discount-service
+$ docker run -p 50051:50051 hashorg/hash-mock-discount-service
+```
+
+## Funcionalidades da Aplicação
+
+- **`POST /checkout`**: A rota deve receber `products` dentro do corpo da requisição, sendo sendo ele um array de objetos que por sua vez contém os campos numéricos `id` e `quantity`, nesta rota também pode ser enviado nos headers a informação `today_date` no formato `yyyy/mm/dd` para que o app possa comparar com o dia da Black Friday configurado no `.env`, se nenhum header for enviado, o app irá comparar automaticamente com a data de hoje.
+
+<p align="center">
+  <img src="https://github.com/felipedmsantos95/hash-cart-challenge/blob/main/img/checkout_headers.png"/>
+</p>
+
+
+- **`GET /products`**: Exibe os produtos cadastrados no [products.json](https://github.com/felipedmsantos95/hash-cart-challenge/blob/main/src/Database/products.json).
+
+## Testes executados
+
+Ao ter instaladas as dependências necessárias para rodar os testes, pode ser executado o comando `npm test` no teminal para que sejam vistas as seguintes validações que foram escritas no arquivo [cart.spec.js](https://github.com/felipedmsantos95/hash-cart-challenge/blob/main/tests/cart.spec.js)
+
+
+- **`should be able to checkout cart with valid products`**: Permite que seja exibido o valor total do carrinho se a requisição for válida.
+
+- **`shouldn't be able to checkout with params with invalid data type`**: Não permite que o seja feito checkout se um array de produtos no formato especificado não for enviado na requisição
+
+- **`shouldn't be able to checkout with invalid products`**: Não permite que seja feito checkout se no carrinho houver um produto não cadastrado
+
+- **`shouldn't be able to checkout with missing params`**: Não permite que seja feito checkout se no corpo da requisição houver parametros faltantes
+
+- **`should be able to get all products info at database`**: Permite que sejam exibidos os produtos descritos em products.json
+
+- **`should be able to add a gift product if it is Black Friday`**: Permite que seja feito checkout de um produto com a flag `is_gift` se for dia de Black Friday
+
+- **`shouldn't be able to add more than one gift product input if it is Black Friday`**: Não permite que seja feito checkout de mais de um produto com a flag `is_gift` se for dia de Black Friday
+
+- **`shouldn't be able to add more than one gift product in quantity if it is Black Friday`**: Não permite que seja feito produto com a flag `is_gift` com o campo `quantity` maior que 1
+
+- **`shouldn't be able to add gift product if it is NOT Black Friday`**: Não permite que seja feito checkout de um produto com a flag `is_gift` se não for dia de Black Friday
+
+
+<p align="center">
+  <img src="https://github.com/felipedmsantos95/hash-cart-challenge/blob/main/img/tests.png"/>
+</p>
+
+Para validar a *regra 2* no desafio proposto, onde se pede que caso o serviço de desconto esteja indisponível o endpoint de carrinho deverá continuar funcionando porém não vai realizar o cálculo com desconto, foi feito o seguinte procedimento:
+
+<p align="center">
+  <img src="https://github.com/felipedmsantos95/hash-cart-challenge/blob/main/img/initial_log.png"/>
+  API e Serviço de desconto em execução
+</p>
+
+<p align="center">
+  <img src="https://github.com/felipedmsantos95/hash-cart-challenge/blob/main/img/stop_discount.png"/>
+  Parada do serviço de desconto
+</p>
+
+<p align="center">
+  <img src="https://github.com/felipedmsantos95/hash-cart-challenge/blob/main/img/200_discount_on.png"/>
+  Execução do checkout
+</p>
+
+
+
+## Exemplos de output da API
+
