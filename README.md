@@ -323,7 +323,7 @@ Para validar a **regra 2** no desafio proposto, onde se pede que caso o serviço
 
 ```
 
-## Outros trabalhos meus relacionados
+### Outros trabalhos meus relacionados
 
 * [GoMarketPlace](https://github.com/felipedmsantos95/gomarketplace)
 * [API de Ecommerce](https://github.com/felipedmsantos95/typeorm-relations)
