@@ -3,8 +3,7 @@ version: "3.8"
 services:
     app:
         container_name: hash-cart
-        build:
-            context: .
+        build: .
         command: npm start
         env_file:
             - .env
