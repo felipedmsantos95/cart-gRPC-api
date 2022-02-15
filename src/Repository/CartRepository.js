@@ -161,7 +161,6 @@ module.exports = {
 
         const CartChekout = await this.CartProductsDetails(products)
 
-        console.log(CartChekout)
         let today
 
         if(headerDate)
