@@ -175,7 +175,7 @@ $ docker run -p 50051:50051 hashorg/hash-mock-discount-service
 
 ## Funcionalidades da Aplicação
 
-- **`POST /checkout`**: A rota deve receber `products` dentro do corpo da requisição, sendo sendo ele um array de objetos que por sua vez contém os campos numéricos `id` e `quantity`, nesta rota também pode ser enviado nos headers a informação `today_date` no formato `yyyy/mm/dd` para que o app possa comparar com o dia da Black Friday configurado no `.env`, se nenhum header for enviado, o app irá comparar automaticamente com a data de hoje.
+- **`POST /checkout`**: A rota deve receber `products` dentro do corpo da requisição, sendo sendo ele um array de objetos que por sua vez contém os campos numéricos `id` e `quantity`, nesta rota também pode ser enviado nos headers a informação `today_date` no formato `yyyy/mm/dd` para que o app possa comparar com o dia da Black Friday configurado no `.env`, se nenhum header for enviado, o app irá comparar a data da Black Friday configurada no .env automaticamente com a data de hoje.
 
 <p align="center">
   <img src="https://github.com/felipedmsantos95/hash-cart-challenge/blob/main/img/checkout_headers.png"/>
@@ -212,24 +212,119 @@ Ao ter instaladas as dependências necessárias para rodar os testes, pode ser e
   <img src="https://github.com/felipedmsantos95/hash-cart-challenge/blob/main/img/tests.png"/>
 </p>
 
-Para validar a *regra 2* no desafio proposto, onde se pede que caso o serviço de desconto esteja indisponível o endpoint de carrinho deverá continuar funcionando porém não vai realizar o cálculo com desconto, foi feito o seguinte procedimento:
+Para validar a **regra 2** no desafio proposto, onde se pede que caso o serviço de desconto esteja indisponível o endpoint de carrinho deverá continuar funcionando porém não vai realizar o cálculo com desconto, foi feito o seguinte procedimento:
 
+1. API e Serviço de desconto em execução
 <p align="center">
   <img src="https://github.com/felipedmsantos95/hash-cart-challenge/blob/main/img/initial_log.png"/>
-  API e Serviço de desconto em execução
 </p>
 
+2. Parada do serviço de desconto
 <p align="center">
   <img src="https://github.com/felipedmsantos95/hash-cart-challenge/blob/main/img/stop_discount.png"/>
-  Parada do serviço de desconto
 </p>
 
+3. Execução do checkout
 <p align="center">
   <img src="https://github.com/felipedmsantos95/hash-cart-challenge/blob/main/img/200_discount_on.png"/>
-  Execução do checkout
 </p>
 
 
 
 ## Exemplos de output da API
 
+1. Status 200
+
+```javascript
+{
+    "total_amount": 223715,
+    "total_amount_with_discount": 221583,
+    "total_discount": 2132,
+    "products_details": [
+        {
+            "id": 5,
+            "quantity": 1,
+            "unit_amount": 42647,
+            "total_amount": 42647,
+            "discount": 2132,
+            "is_gift": false
+        },
+        {
+            "id": 3,
+            "quantity": 3,
+            "unit_amount": 60356,
+            "total_amount": 181068,
+            "discount": 0,
+            "is_gift": false
+        }
+    ]
+}
+```
+
+2. Corpo da requisição inválido
+
+```javascript
+{
+    "statusCode": 400,
+    "error": "Bad Request",
+    "message": "Validation failed",
+    "validation": {
+        "body": {
+        "source": "body",
+        "keys": [
+            "products.0.id"
+        ],
+        "message": "\"id\" é um campo obrigatório"
+        }
+    }  
+}
+
+```
+
+3. Produto brinde em uma data não Black Friday
+
+```javascript
+
+{
+    "validation": {
+        "message": [
+            "O produto de id 6 é um brinde de black friday e não pode ser adicionado ao carrinho por enquanto..."
+        ]
+    }
+}
+
+```
+
+
+4. Produto não cadastrado no banco de dados
+
+```javascript
+{
+    "validation": {
+        "message": [
+            "O produto de id 50 não está cadastrado em nosso banco de dados",
+            "O produto de id 55 não está cadastrado em nosso banco de dados"
+        ]
+    }
+}
+
+```
+
+5. Mais de uma entrada de produtos brinde na black friday
+
+```javascript
+{
+  "validation": {
+    "message": [
+      "Só pode haver a quantidade de 1 produto brinde na blackfriday."
+    ]
+  }
+}
+
+```
+
+## Links para outros trabalhos meus relacionados
+
+* [GoMarketPlace](https://github.com/felipedmsantos95/gomarketplace)
+* [API de Ecommerce](https://github.com/felipedmsantos95/typeorm-relations)
+* [GoFinances](https://github.com/felipedmsantos95/gofinances-backend)

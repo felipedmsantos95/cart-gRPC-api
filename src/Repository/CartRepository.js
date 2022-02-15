@@ -185,7 +185,7 @@ module.exports = {
             })
 
             if( (arrayOfGifts.length > 1 || (arrayOfGifts[0] && arrayOfGifts[0].quantity > 1))) //Verifiy if has more than one gift products in quantity or ids
-                return { status: 400,  msg:{validation: { message: [`Só pode haver a quantidade de 1 produto brinde de ID ${arrayOfGifts[0].id} na blackfriday.`]}} }
+                return { status: 400,  msg:{validation: { message: [`Só pode haver a quantidade de 1 produto brinde na blackfriday.`]}} }
             else
                 return {status: 200, msg: CartChekout}
 
