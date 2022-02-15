@@ -81,8 +81,8 @@ Abaixo segue um exemplo de resposta com status HTTP 200 da API:
 ## Clonando o Projeto
 
 ```bash
-$ git clone https://github.com/felipedmsantos95/hash-cart-challenge 
-$ cd hash-cart-challenge
+ git clone https://github.com/felipedmsantos95/hash-cart-challenge 
+ cd hash-cart-challenge
 ```
 
 ## Executando o Projeto (Com Docker Compose)
@@ -95,7 +95,7 @@ Considerando que os requisitos para rodar a aplicação estejam satisfeitos, pod
 Antes de execução dos comandos docker, precisamos configurar um `.env` na raiz do projeto, as variáveis devem ser configuradas seguindo o [exemplo](https://github.com/felipedmsantos95/hash-cart-challenge/blob/main/.env.example)
 
 ```bash
-$ touch .env
+ touch .env
 ```
 Modelo de conteúdo do arquivo:
 
@@ -127,7 +127,7 @@ BLACK_FRIDAY_DAY=2022/02/16
 Para baixar as imagens docker necessárias e executar os containers com a API e o [serviço de desconto da Hash]((https://hub.docker.com/r/hashorg/hash-mock-discount-service)):
 
 ```bash
-$ docker-compose up
+ docker-compose up
 ```
 
 Essa deve ser a sáida do terminal e a API estará pronta para receber requisições:
@@ -143,7 +143,7 @@ Essa deve ser a sáida do terminal e a API estará pronta para receber requisiç
 ### Instalando as dependências da API
 
 ```bash
-$ npm install
+ npm install
 ```
 
 ### Scripts da API
@@ -151,26 +151,26 @@ $ npm install
 Executar serviço:
 
 ```bash
-$ npm start
+ npm start
 ```
 
 Executar serviço com reinício automático se for detectada alteração no código:
 
 ```bash
-$ npm run dev
+ npm run dev
 ```
 
 Executar script de testes da aplicação
 
 ```bash
-$ npm test
+ npm test
 ```
 
 ### Executando serviço de desconto
 
 ```bash
-$ docker pull hashorg/hash-mock-discount-service
-$ docker run -p 50051:50051 hashorg/hash-mock-discount-service
+ docker pull hashorg/hash-mock-discount-service
+ docker run -p 50051:50051 hashorg/hash-mock-discount-service
 ```
 
 ## Funcionalidades da Aplicação
