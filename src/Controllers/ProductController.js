@@ -15,13 +15,8 @@ module.exports = {
 
         const checkBlackFriday = await CartRepository.BlackFridayCheck(products, today_date)
 
-        
-        if(checkBlackFriday.msg.is_invalid) {
-            const checkInvalidProduct = CartRepository.PickProductsNotFound(checkBlackFriday.msg.products_details)
-            response.status(checkInvalidProduct.status).send(checkInvalidProduct.msg)
-        }        
-        else {
-            response.status(checkBlackFriday.status).send(checkBlackFriday.msg)
-        }
+
+        response.status(checkBlackFriday.status).send(checkBlackFriday.msg)
+
     }
 }
