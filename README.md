@@ -169,7 +169,7 @@ Executar script de testes de integração da aplicação
 Executar script de testes unitários da aplicação
 
 ```bash
- npm unitytest
+ npm run unitytest
 ```
 
 
@@ -241,7 +241,7 @@ Alguns testes unitários para validar o funcionamento das funções intermediár
 
 
 ```bash
- npm unitytest
+ npm run unitytest
 ```
 
 

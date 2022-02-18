@@ -168,7 +168,7 @@ Run application integration test script
 Run application unity test script
 
 ```bash
- npm unitytest
+ npm run unitytest
 ```
 
 
@@ -237,7 +237,7 @@ To validate the **rule 2** in the proposed challenge, where it is asked that if 
 Some unit tests to validate the functioning of the intermediate functions were also written, they can be verified through the command
 
 ```bash
- npm unitytest
+ npm run unitytest
 ```
 
 
