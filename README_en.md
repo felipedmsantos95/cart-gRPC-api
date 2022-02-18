@@ -159,11 +159,18 @@ Run service with automatic restart if code change is detected
  npm run dev
 ```
 
-Run application test script
+Run application integration test script
 
 ```bash
  npm test
 ```
+
+Run application unity test script
+
+```bash
+ npm unitytest
+```
+
 
 ### Running discount service
 ```bash
@@ -227,6 +234,11 @@ To validate the **rule 2** in the proposed challenge, where it is asked that if 
   <img src="https://github.com/felipedmsantos95/hash-cart-challenge/blob/main/img/200_discount_on.png"/>
 </p>
 
+Some unit tests to validate the functioning of the intermediate functions were also written, they can be verified through the command
+
+```bash
+ npm unitytest
+```
 
 
 ## API output examples

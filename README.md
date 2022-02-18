@@ -160,11 +160,18 @@ Executar serviço com reinício automático se for detectada alteração no cód
  npm run dev
 ```
 
-Executar script de testes da aplicação
+Executar script de testes de integração da aplicação
 
 ```bash
  npm test
 ```
+
+Executar script de testes unitários da aplicação
+
+```bash
+ npm unitytest
+```
+
 
 ### Executando serviço de desconto
 
@@ -229,6 +236,13 @@ Para validar a **regra 2** no desafio proposto, onde se pede que caso o serviço
   <img src="https://github.com/felipedmsantos95/hash-cart-challenge/blob/main/img/200_discount_on.png"/>
 </p>
 
+
+Alguns testes unitários para validar o funcionamento das funções intermediárias também foram escritos, eles podem ser verificados através do comando
+
+
+```bash
+ npm unitytest
+```
 
 
 ## Exemplos de output da API
