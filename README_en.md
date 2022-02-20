@@ -24,7 +24,7 @@ In summary, the requisition must contain a list of products and the quantity of 
 }
 ```
 
-### Regras
+### Rules
 
 The API has the following business rules:
 
