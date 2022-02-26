@@ -5,9 +5,7 @@
     <a href="README.md">Português</a>&nbsp;&nbsp;&nbsp;
 </p>
 
-
 ## Sobre
-
 
 Consiste em uma API HTTP (JSON) de e-commerce (venda online) e que terá um endpoint de carrinho (checkout). Esse endpoint aceitará uma requisição com método POST, a estrutura do payload de requisição que segue o exemplo:
 
@@ -66,29 +64,28 @@ Abaixo segue um exemplo de resposta com status HTTP 200 da API:
 
 ## Tecnologias Utilizadas
 
-*	[Node.js](https://nodejs.org/en/)
-*   Scripts de teste na API foram escritos através do framework [Jest](https://jestjs.io/pt-BR/)
-*	[Docker](https://www.docker.com/get-started)
-*   [Docker-Compose](https://docs.docker.com/compose/install/)
+-   [Node.js](https://nodejs.org/en/)
+-   Scripts de teste na API foram escritos através do framework [Jest](https://jestjs.io/pt-BR/)
+-   [Docker](https://www.docker.com/get-started)
+-   [Docker-Compose](https://docs.docker.com/compose/install/)
 
 ## Requisitos
 
-*   [NPM](https://www.npmjs.com/) 8.5 ou superior
-*   [Node](https://nodejs.org/en/) 12.22 ou superior
-*   [Docker](https://www.docker.com/get-started) 19.x ou superior
-*   [Docker-Compose](https://docs.docker.com/compose/install/) 1.26 ou superior
+-   [NPM](https://www.npmjs.com/) 8.5 ou superior
+-   [Node](https://nodejs.org/en/) 12.22 ou superior
+-   [Docker](https://www.docker.com/get-started) 19.x ou superior
+-   [Docker-Compose](https://docs.docker.com/compose/install/) 1.26 ou superior
 
 ## Clonando o Projeto
 
 ```bash
- git clone https://github.com/felipedmsantos95/hash-cart-challenge 
+ git clone https://github.com/felipedmsantos95/hash-cart-challenge
  cd hash-cart-challenge
 ```
 
 ## Executando o Projeto (Com Docker Compose)
 
 Considerando que os requisitos para rodar a aplicação estejam satisfeitos, podemos executar os seguintes comandos:
-
 
 ### Configurando Variáveis de Ambiente
 
@@ -97,6 +94,7 @@ Antes de execução dos comandos docker, precisamos configurar um `.env` na raiz
 ```bash
  touch .env
 ```
+
 Modelo de conteúdo do arquivo:
 
 ```bash
@@ -124,7 +122,7 @@ BLACK_FRIDAY_DAY=2022/02/16
 
 ### Rodando a aplicação
 
-Para baixar as imagens docker necessárias e executar os containers com a API e o [serviço de desconto da Hash]((https://hub.docker.com/r/hashorg/hash-mock-discount-service)):
+Para baixar as imagens docker necessárias e executar os containers com a API e o [serviço de desconto da Hash](<(https://hub.docker.com/r/hashorg/hash-mock-discount-service)>):
 
 ```bash
  docker-compose up
@@ -136,9 +134,7 @@ Essa deve ser a sáida do terminal e a API estará pronta para receber requisiç
   <img src="https://github.com/felipedmsantos95/hash-cart-challenge/blob/main/img/initial_log.png"/>
 </p>
 
-
 ## Executando o Projeto (Sem Docker Compose)
-
 
 ### Instalando as dependências da API
 
@@ -172,7 +168,6 @@ Executar script de testes unitários da aplicação
  npm run unitytest
 ```
 
-
 ### Executando serviço de desconto
 
 ```bash
@@ -182,38 +177,35 @@ Executar script de testes unitários da aplicação
 
 ## Funcionalidades da Aplicação
 
-- **`POST /checkout`**: A rota deve receber `products` dentro do corpo da requisição, sendo sendo ele um array de objetos que por sua vez contém os campos numéricos `id` e `quantity`, nesta rota também pode ser enviado nos headers a informação `today_date` no formato `yyyy/mm/dd` para que o app possa comparar com o dia da Black Friday configurado no `.env`, se nenhum header for enviado, o app irá comparar a data da Black Friday configurada no .env automaticamente com a data de hoje.
+-   **`POST /checkout`**: A rota deve receber `products` dentro do corpo da requisição, sendo sendo ele um array de objetos que por sua vez contém os campos numéricos `id` e `quantity`, nesta rota também pode ser enviado nos headers a informação `today_date` no formato `yyyy/mm/dd` para que o app possa comparar com o dia da Black Friday configurado no `.env`, se nenhum header for enviado, o app irá comparar a data da Black Friday configurada no .env automaticamente com a data de hoje.
 
 <p align="center">
   <img src="https://github.com/felipedmsantos95/hash-cart-challenge/blob/main/img/checkout_headers.png"/>
 </p>
 
-
-- **`GET /products`**: Exibe os produtos cadastrados no [products.json](https://github.com/felipedmsantos95/hash-cart-challenge/blob/main/src/Database/products.json).
+-   **`GET /products`**: Exibe os produtos cadastrados no [products.json](https://github.com/felipedmsantos95/hash-cart-challenge/blob/main/src/Database/products.json).
 
 ## Testes executados
 
 Ao ter instaladas as dependências necessárias para rodar os testes, pode ser executado o comando `npm test` no teminal para que sejam vistas as seguintes validações que foram escritas no arquivo [cart.spec.js](https://github.com/felipedmsantos95/hash-cart-challenge/blob/main/tests/cart.spec.js)
 
+-   **`should be able to checkout cart with valid products`**: Permite que seja exibido o valor total do carrinho se a requisição for válida.
 
-- **`should be able to checkout cart with valid products`**: Permite que seja exibido o valor total do carrinho se a requisição for válida.
+-   **`shouldn't be able to checkout with params with invalid data type`**: Não permite que o seja feito checkout se um array de produtos no formato especificado não for enviado na requisição
 
-- **`shouldn't be able to checkout with params with invalid data type`**: Não permite que o seja feito checkout se um array de produtos no formato especificado não for enviado na requisição
+-   **`shouldn't be able to checkout with invalid products`**: Não permite que seja feito checkout se no carrinho houver um produto não cadastrado
 
-- **`shouldn't be able to checkout with invalid products`**: Não permite que seja feito checkout se no carrinho houver um produto não cadastrado
+-   **`shouldn't be able to checkout with missing params`**: Não permite que seja feito checkout se no corpo da requisição houver parametros faltantes
 
-- **`shouldn't be able to checkout with missing params`**: Não permite que seja feito checkout se no corpo da requisição houver parametros faltantes
+-   **`should be able to get all products info at database`**: Permite que sejam exibidos os produtos descritos em products.json
 
-- **`should be able to get all products info at database`**: Permite que sejam exibidos os produtos descritos em products.json
+-   **`should be able to add a gift product if it is Black Friday`**: Permite que seja feito checkout de um produto com a flag `is_gift` se for dia de Black Friday
 
-- **`should be able to add a gift product if it is Black Friday`**: Permite que seja feito checkout de um produto com a flag `is_gift` se for dia de Black Friday
+-   **`shouldn't be able to add more than one gift product input if it is Black Friday`**: Não permite que seja feito checkout de mais de um produto com a flag `is_gift` se for dia de Black Friday
 
-- **`shouldn't be able to add more than one gift product input if it is Black Friday`**: Não permite que seja feito checkout de mais de um produto com a flag `is_gift` se for dia de Black Friday
+-   **`shouldn't be able to add more than one gift product in quantity if it is Black Friday`**: Não permite que seja feito produto com a flag `is_gift` com o campo `quantity` maior que 1
 
-- **`shouldn't be able to add more than one gift product in quantity if it is Black Friday`**: Não permite que seja feito produto com a flag `is_gift` com o campo `quantity` maior que 1
-
-- **`shouldn't be able to add gift product if it is NOT Black Friday`**: Não permite que seja feito checkout de um produto com a flag `is_gift` se não for dia de Black Friday
-
+-   **`shouldn't be able to add gift product if it is NOT Black Friday`**: Não permite que seja feito checkout de um produto com a flag `is_gift` se não for dia de Black Friday
 
 <p align="center">
   <img src="https://github.com/felipedmsantos95/hash-cart-challenge/blob/main/img/tests.png"/>
@@ -222,28 +214,25 @@ Ao ter instaladas as dependências necessárias para rodar os testes, pode ser e
 Para validar a **regra 2** no desafio proposto, onde se pede que caso o serviço de desconto esteja indisponível o endpoint de carrinho deverá continuar funcionando porém não vai realizar o cálculo com desconto, foi feito o seguinte procedimento:
 
 1. API e Serviço de desconto em execução
-<p align="center">
-  <img src="https://github.com/felipedmsantos95/hash-cart-challenge/blob/main/img/initial_log.png"/>
-</p>
+ <p align="center">
+   <img src="https://github.com/felipedmsantos95/hash-cart-challenge/blob/main/img/initial_log.png"/>
+ </p>
 
 2. Parada do serviço de desconto
-<p align="center">
-  <img src="https://github.com/felipedmsantos95/hash-cart-challenge/blob/main/img/stop_discount.png"/>
-</p>
+ <p align="center">
+   <img src="https://github.com/felipedmsantos95/hash-cart-challenge/blob/main/img/stop_discount.png"/>
+ </p>
 
 3. Execução do checkout
-<p align="center">
-  <img src="https://github.com/felipedmsantos95/hash-cart-challenge/blob/main/img/200_discount_on.png"/>
-</p>
-
+ <p align="center">
+   <img src="https://github.com/felipedmsantos95/hash-cart-challenge/blob/main/img/200_discount_on.png"/>
+ </p>
 
 Alguns testes unitários para validar o funcionamento das funções intermediárias também foram escritos, eles podem ser verificados através do comando
-
 
 ```bash
  npm run unitytest
 ```
-
 
 ## Exemplos de output da API
 
@@ -290,7 +279,7 @@ Alguns testes unitários para validar o funcionamento das funções intermediár
         ],
         "message": "\"id\" é um campo obrigatório"
         }
-    }  
+    }
 }
 
 ```
@@ -308,7 +297,6 @@ Alguns testes unitários para validar o funcionamento das funções intermediár
 }
 
 ```
-
 
 4. Produto não cadastrado no banco de dados
 
@@ -339,6 +327,6 @@ Alguns testes unitários para validar o funcionamento das funções intermediár
 
 ### Outros trabalhos meus relacionados
 
-* [GoMarketPlace](https://github.com/felipedmsantos95/gomarketplace)
-* [API de Ecommerce](https://github.com/felipedmsantos95/typeorm-relations)
-* [GoFinances](https://github.com/felipedmsantos95/gofinances-backend)
+-   [GoMarketPlace](https://github.com/felipedmsantos95/gomarketplace)
+-   [API de Ecommerce](https://github.com/felipedmsantos95/typeorm-relations)
+-   [GoFinances](https://github.com/felipedmsantos95/gofinances-backend)

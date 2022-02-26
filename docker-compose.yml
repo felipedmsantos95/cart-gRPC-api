@@ -1,4 +1,4 @@
-version: "3"
+version: '3'
 
 services:
     app:
@@ -8,7 +8,7 @@ services:
         env_file:
             - .env
         ports:
-            - "${API_PORT}:${API_PORT}"
+            - '${API_PORT}:${API_PORT}'
         volumes:
             - .:/usr/app
             - /usr/app/node_modules
@@ -20,12 +20,10 @@ services:
         container_name: discount-service
         image: hashorg/hash-mock-discount-service
         ports:
-            - "50051:50051"
+            - '50051:50051'
         networks:
             - hash-network
 
 networks:
     hash-network:
         driver: bridge
-
-

@@ -1,20 +1,14 @@
-const Products = require('../Database/products.json')
+const Products = require('../Database/products.json');
 
 module.exports = {
-
-    FindAll(){
-        return Products
+    FindAll() {
+        return Products;
     },
-    
+
     FindById(id) {
-        const productIndex = Products.findIndex( product => product.id === id)
-        if(productIndex != -1)
-            return Products[productIndex]
-        else
-            return null
+        const productIndex = Products.findIndex(product => product.id === id);
+
+        if (productIndex != -1) return Products[productIndex];
+        return null;
     },
-
-
-
-
-}
+};
