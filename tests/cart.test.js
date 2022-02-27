@@ -1,13 +1,12 @@
-const test = require('tape');
 const CartService = require('../src/Services/CartService');
 
-test('Calculate Discount', t => {
-    t.assert(CartService.DiscountCalc(100, 0.05) == 5, 'Correct Discount');
-    t.end();
+test('Calculate Discount', () => {
+    expect(CartService.DiscountCalc(100, 0.05)).toEqual(5);
+
 });
 
-test('Calculate Total Cart', t => {
-    t.assert(
+test('Calculate Total Cart', () => {
+    expect(
         CartService.TotalCart([
             {
                 id: 5,
@@ -18,14 +17,12 @@ test('Calculate Total Cart', t => {
                 id: 3,
                 quantity: 2,
             },
-        ]) == 163359,
-        'Correct Total Cart',
-    );
-    t.end();
+        ])
+    ).toEqual(163359);
 });
 
-test('Calculate Total Cart with 0 quantity', t => {
-    t.assert(
+test('Calculate Total Cart with 0 quantity', () => {
+    expect(
         CartService.TotalCart([
             {
                 id: 5,
@@ -36,26 +33,26 @@ test('Calculate Total Cart with 0 quantity', t => {
                 id: 3,
                 quantity: 0,
             },
-        ]) == 0,
-        'Correct Total Cart',
-    );
-    t.end();
+        ])
+    ).toEqual(0);
 });
 
-test('Detecting Invalid Products', t => {
-    t.deepEqual(
-        CartService.PickProductsNotFound([
-            { invalid: 50 },
-            {
-                id: 3,
-                quantity: 0,
-                unit_amount: 60356,
-                total_amount: 0,
-                discount: 0,
-                is_gift: false,
-            },
-        ]),
-        {
+test('Detecting Invalid Products', () => {
+    expect(
+        CartService.PickProductsNotFound({
+            is_invalid: true,
+            products_details: [
+                { invalid: 50 },
+                {
+                    id: 3,
+                    quantity: 0,
+                    unit_amount: 60356,
+                    total_amount: 0,
+                    discount: 0,
+                    is_gift: false,
+                },
+            ]
+        })).toEqual({
             status: 404,
             msg: {
                 validation: {
@@ -64,8 +61,5 @@ test('Detecting Invalid Products', t => {
                     ],
                 },
             },
-        },
-        'Invalid Product detected',
-    );
-    t.end();
+        })
 });

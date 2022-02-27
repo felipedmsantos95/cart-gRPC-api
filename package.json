@@ -6,7 +6,6 @@
         "start": "node src/index.js",
         "dev": "nodemon src/index.js",
         "test": "cross-env NODE_ENV=test jest",
-        "unitytest": "node tests/cart.test.js",
         "format:check": "prettier --check .",
         "format:write": "prettier --write .",
         "lint:check": "eslint .",
@@ -36,7 +35,6 @@
         "express": "^4.17.2",
         "grpc-promise": "^1.4.0",
         "morgan": "^1.10.0",
-        "path": "^0.12.7",
-        "tape": "^5.5.2"
+        "path": "^0.12.7"
     }
 }

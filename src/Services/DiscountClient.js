@@ -2,6 +2,8 @@ const grpc = require('@grpc/grpc-js');
 const protoLoader = require('@grpc/proto-loader');
 const path = require('path');
 
+const ProductRepository = require('../Repository/ProductRepository');
+
 const protoObject = protoLoader.loadSync(
     path.resolve(__dirname, 'discount.proto'),
 );
@@ -12,6 +14,21 @@ const client = new DiscountClient.discount.Discount(
     grpc.credentials.createInsecure(),
 );
 
+async function GetServiceDiscount(id) {
+    // Verify if is a gift product
+    if (ProductRepository.FindById(id).is_gift) {
+        return { percentage: 0 };
+    }
+    return new Promise((resolve, reject) =>
+        client.GetDiscount({ productID: id }, function (err, discount) {
+            if (err) {
+                return reject(err);
+            }
+            resolve(discount);
+        }),
+    );
+}
+
 module.exports = {
-    DiscountClient: client,
+    GetServiceDiscount,
 };
