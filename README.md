@@ -1,4 +1,4 @@
-# Hash Cart Challenge
+# gRPC Cart API
 
 <p align="center">
     <a href="README_en.md">English</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
@@ -7,7 +7,7 @@
 
 ## Sobre
 
-Consiste em uma API HTTP (JSON) de e-commerce (venda online) e que terá um endpoint de carrinho (checkout). Esse endpoint aceitará uma requisição com método POST, a estrutura do payload de requisição que segue o exemplo:
+Consiste em uma API HTTP (JSON) de e-commerce (venda online) e tem um endpoint de carrinho (checkout). Esse endpoint aceitará uma requisição com método POST, a estrutura do payload de requisição que segue o exemplo:
 
 Em resumo a requisição deve conter uma lista de produtos e a quantidade de cada um a ser comprado.
 
