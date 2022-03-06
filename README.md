@@ -89,7 +89,7 @@ Considerando que os requisitos para rodar a aplicação estejam satisfeitos, pod
 
 ### Configurando Variáveis de Ambiente
 
-Antes de execução dos comandos docker, precisamos configurar um `.env` na raiz do projeto, as variáveis devem ser configuradas seguindo o [exemplo](https://github.com/felipedmsantos95/hash-cart-challenge/blob/main/.env.example)
+Antes de execução dos comandos docker, precisamos configurar um `.env` na raiz do projeto, as variáveis devem ser configuradas seguindo o [exemplo](https://github.com/felipedmsantos95/cart-gRPC-api/blob/main/.env.example)
 
 ```bash
  touch .env
@@ -131,7 +131,7 @@ Para baixar as imagens docker necessárias e executar os containers com a API e 
 Essa deve ser a sáida do terminal e a API estará pronta para receber requisições:
 
 <p align="center">
-  <img src="https://github.com/felipedmsantos95/hash-cart-challenge/blob/main/img/initial_log.png"/>
+  <img src="https://github.com/felipedmsantos95/cart-gRPC-api/blob/main/img/initial_log.png"/>
 </p>
 
 ## Executando o Projeto (Sem Docker Compose)
@@ -174,14 +174,14 @@ Executar script de testes unitários e de integração da aplicação
 -   **`POST /checkout`**: A rota deve receber `products` dentro do corpo da requisição, sendo sendo ele um array de objetos que por sua vez contém os campos numéricos `id` e `quantity`, nesta rota também pode ser enviado nos headers a informação `today_date` no formato `yyyy/mm/dd` para que o app possa comparar com o dia da Black Friday configurado no `.env`, se nenhum header for enviado, o app irá comparar a data da Black Friday configurada no .env automaticamente com a data de hoje.
 
 <p align="center">
-  <img src="https://github.com/felipedmsantos95/hash-cart-challenge/blob/main/img/checkout_headers.png"/>
+  <img src="https://github.com/felipedmsantos95/cart-gRPC-api/blob/main/img/checkout_headers.png"/>
 </p>
 
--   **`GET /products`**: Exibe os produtos cadastrados no [products.json](https://github.com/felipedmsantos95/hash-cart-challenge/blob/main/src/Database/products.json).
+-   **`GET /products`**: Exibe os produtos cadastrados no [products.json](https://github.com/felipedmsantos95/cart-gRPC-api/blob/main/src/Database/products.json).
 
 ## Testes executados
 
-Ao ter instaladas as dependências necessárias para rodar os testes, pode ser executado o comando `npm test` no teminal para que sejam vistas as seguintes validações que foram escritas no arquivo [cart.spec.js](https://github.com/felipedmsantos95/hash-cart-challenge/blob/main/tests/cart.spec.js)
+Ao ter instaladas as dependências necessárias para rodar os testes, pode ser executado o comando `npm test` no teminal para que sejam vistas as seguintes validações que foram escritas no arquivo [cart.spec.js](https://github.com/felipedmsantos95/cart-gRPC-api/blob/main/tests/cart.spec.js)
 
 -   **`should be able to checkout cart with valid products`**: Permite que seja exibido o valor total do carrinho se a requisição for válida.
 
@@ -202,24 +202,24 @@ Ao ter instaladas as dependências necessárias para rodar os testes, pode ser e
 -   **`shouldn't be able to add gift product if it is NOT Black Friday`**: Não permite que seja feito checkout de um produto com a flag `is_gift` se não for dia de Black Friday
 
 <p align="center">
-  <img src="https://github.com/felipedmsantos95/hash-cart-challenge/blob/main/img/tests.png"/>
+  <img src="https://github.com/felipedmsantos95/cart-gRPC-api/blob/main/img/tests.png"/>
 </p>
 
 Para validar a **regra 2** no desafio proposto, onde se pede que caso o serviço de desconto esteja indisponível o endpoint de carrinho deverá continuar funcionando porém não vai realizar o cálculo com desconto, foi feito o seguinte procedimento:
 
 1. API e Serviço de desconto em execução
  <p align="center">
-   <img src="https://github.com/felipedmsantos95/hash-cart-challenge/blob/main/img/initial_log.png"/>
+   <img src="https://github.com/felipedmsantos95/cart-gRPC-api/blob/main/img/initial_log.png"/>
  </p>
 
 2. Parada do serviço de desconto
  <p align="center">
-   <img src="https://github.com/felipedmsantos95/hash-cart-challenge/blob/main/img/stop_discount.png"/>
+   <img src="https://github.com/felipedmsantos95/cart-gRPC-api/blob/main/img/stop_discount.png"/>
  </p>
 
 3. Execução do checkout
  <p align="center">
-   <img src="https://github.com/felipedmsantos95/hash-cart-challenge/blob/main/img/200_discount_on.png"/>
+   <img src="https://github.com/felipedmsantos95/cart-gRPC-api/blob/main/img/200_discount_on.png"/>
  </p>
 
 
