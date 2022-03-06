@@ -79,8 +79,8 @@ Abaixo segue um exemplo de resposta com status HTTP 200 da API:
 ## Clonando o Projeto
 
 ```bash
- git clone https://github.com/felipedmsantos95/hash-cart-challenge
- cd hash-cart-challenge
+ git clone https://github.com/felipedmsantos95/cart-gRPC-api
+ cd cart-gRPC-api
 ```
 
 ## Executando o Projeto (Com Docker Compose)
